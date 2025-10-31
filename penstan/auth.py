@@ -1,37 +1,22 @@
 import json
 from typing import Dict, Optional
 from pydantic import StrictStr
-from fastapi import HTTPException, status
-from fastapi.security import APIKeyHeader
-from fastapi.param_functions import Depends
+from fastapi import HTTPException, Header, Query, status
 from penstan.settings import get_settings
-
-X_API_KEY = APIKeyHeader(
-    name='X-API-Key',
-    scheme_name='X-API-Key',
-    description='API key to authorize with.',
-)
 
 # api key cache
 __keys: Optional[Dict[str, str]] = None
 
-def api_key_header(x_api_key: StrictStr = Depends(X_API_KEY)) -> None:
-    """
-    Authenticate X-API-Key header.
-
-    Args:
-        x_api_key:  The API key to authenticate with.
-
-    Raises:
-        HTTPException:  If x_api_key is invalid.
-    """
-
-    if not validate_api_key(x_api_key):
+async def api_key_dependency(
+    api_key_header: StrictStr | None = Header(None, alias="X-API-Key"),
+    api_key_query: StrictStr | None = Query(None, alias="api_key")
+) -> None:
+    api_key = api_key_header or api_key_query
+    if not api_key or not validate_api_key(api_key):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Unauthorized",
         )
-
 
 def validate_api_key(api_key: str) -> bool:
     global __keys

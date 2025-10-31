@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from penstan.api.endpoints.status import router as status_router
 from penstan.api.router import api_router
+from penstan.auth import api_key_dependency
 from penstan.settings import Settings, get_settings
-from penstan.auth import api_key_header
 
 settings: Settings = get_settings()
 
@@ -17,7 +17,7 @@ def create_app() -> FastAPI:
         debug=settings.DEBUG,
     )
 
-    app.include_router(api_router, dependencies=[Depends(api_key_header)])
+    app.include_router(api_router, dependencies=[Depends(api_key_dependency)])
     app.include_router(status_router, prefix='/status')
 
     # Add CORS Middlewares
