@@ -1,0 +1,13 @@
+[project]
+name = "penstan"
+version = "0.1.0"
+description = "Stonks"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.120.3",
+    "pydantic>=2.12.3",
+    "pydantic-settings>=2.11.0",
+    "python-json-logger>=4.0.0",
+    "uvicorn>=0.38.0",
+]
