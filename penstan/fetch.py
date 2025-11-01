@@ -235,11 +235,14 @@ def multi_timeframe_opportunity(symbol: str) -> dict:
     short_score = opportunity_score(short_df, lookback=12, recent=2, local=True)
 
     # Long-term (1d)
-    long_df = fetch_data([symbol], '1d', '1mo')[symbol]
-    long_score = opportunity_score(long_df, lookback=15, recent=3, local=False)
+    medium_df = fetch_data([symbol], '1d', '1mo')[symbol]
+    medium_score = opportunity_score(medium_df, lookback=15, recent=3, local=False)
+
+    long_df = fetch_data([symbol], '1wk', '3mo')[symbol]
+    long_score = opportunity_score(long_df, lookback=12, recent=2, local=False)
 
     with pd.option_context('display.max_rows', None):
-        print(long_df[['Close', 'Open', 'High', 'Low', 'Volatility', 'Volume', 'Change']])
+        print(medium_df[['Close', 'Open', 'High', 'Low', 'Volatility', 'Volume', 'Change']])
 
     # Combine with weighting
     combined_score = short_score['score'] * 0.6 + long_score['score'] * 0.4
@@ -256,6 +259,7 @@ def multi_timeframe_opportunity(symbol: str) -> dict:
         'combined_score': round(combined_score, 1),
         'rating': rating,
         'short_term': short_score,
+        'medium_term': medium_score,
         'long_term': long_score,
     }
 
