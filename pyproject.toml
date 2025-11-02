@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi>=0.120.3",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.10.7",
     "pydantic>=2.12.3",
     "pydantic-settings>=2.11.0",
     "python-json-logger>=4.0.0",

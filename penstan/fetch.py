@@ -3,8 +3,11 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 import json
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
-type Time = Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '4h', '1d', '5d', '1wk', '1mo', '3mo']
+type Period = Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']
+type Interval = Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '4h', '1d', '5d', '1wk', '1mo', '3mo']
 
 def set_timezone(dt_index: pd.DatetimeIndex, target_tz: str = "Etc/GMT-1") -> pd.DatetimeIndex:
     if dt_index.tz and dt_index.tz.tzname != target_tz:
@@ -13,7 +16,7 @@ def set_timezone(dt_index: pd.DatetimeIndex, target_tz: str = "Etc/GMT-1") -> pd
     return dt_index
 
 
-def fetch_data(symbols: list[str], interval: Time, period: Time | None, test: bool = False) -> dict[str, pd.DataFrame]:
+def fetch_data(symbols: list[str], interval: Interval, period: Period, test: bool = False) -> dict[str, pd.DataFrame]:
     data = yf.download(
         symbols, 
         period=period,
@@ -49,7 +52,7 @@ def fetch_data(symbols: list[str], interval: Time, period: Time | None, test: bo
             'Volume': int
         })
 
-        df = df.iloc[:-3]
+        # df = df.iloc[:-3]
             
         result[symbol] = df
     
@@ -59,7 +62,7 @@ def analyze_volume(df: pd.DataFrame, lookback: int, recent: int) -> pd.Series:
     vol = df['Volume']
 
     # EWMA smoothing
-    vol_ewm = vol.ewm(span=lookback, adjust=False).mean()
+    vol_ewm = vol.ewm(span=recent, adjust=False).mean()
 
     current_volume = vol.iloc[-1]
     avg_all = vol_ewm.mean()
@@ -170,7 +173,7 @@ def opportunity_score(df: pd.DataFrame, lookback: int = 20, recent: int = 5, loc
             score += 10
             signals.append('volatility_spike_local')
     else:
-        if volume_analysis['volume_ratio_global'] > 1.5 and volume_analysis['is_spike'] == False:
+        if volume_analysis['volume_ratio_global'] > 1.5:
             score += 20
             signals.append('sustained_volume_global')
         elif volume_analysis['is_spike'] == True:
@@ -230,11 +233,9 @@ def opportunity_score(df: pd.DataFrame, lookback: int = 20, recent: int = 5, loc
 
 
 def multi_timeframe_opportunity(symbol: str) -> dict:
-    # Short-term (1h)
-    short_df = fetch_data([symbol], '1h', '1wk', test=True)[symbol]
-    short_score = opportunity_score(short_df, lookback=12, recent=2, local=True)
+    short_df = fetch_data([symbol], '1h', '5d', test=True)[symbol]
+    short_score = opportunity_score(short_df, lookback=15, recent=2, local=True)
 
-    # Long-term (1d)
     medium_df = fetch_data([symbol], '1d', '1mo')[symbol]
     medium_score = opportunity_score(medium_df, lookback=15, recent=3, local=False)
 
@@ -242,10 +243,11 @@ def multi_timeframe_opportunity(symbol: str) -> dict:
     long_score = opportunity_score(long_df, lookback=12, recent=2, local=False)
 
     with pd.option_context('display.max_rows', None):
+        plot(short_df['Volume'])
         print(medium_df[['Close', 'Open', 'High', 'Low', 'Volatility', 'Volume', 'Change']])
 
     # Combine with weighting
-    combined_score = short_score['score'] * 0.6 + long_score['score'] * 0.4
+    combined_score = short_score['score'] * 0.5 + long_score['score'] * 0.2 + medium_score['score'] * 0.3
 
     rating = (
         'strong_buy' if combined_score >= 70 else
@@ -263,10 +265,14 @@ def multi_timeframe_opportunity(symbol: str) -> dict:
         'long_term': long_score,
     }
 
+
+def plot(series):
+    series.plot(kind='bar', figsize=(10,4), logy=True)
+    plt.xticks(rotation=45)
+    plt.title("Volume over Time (Log Scale)")
+    plt.ylabel("Volume")
+    plt.tight_layout()
+    plt.show()
+
 if __name__ == "__main__":
-    print(json.dumps(multi_timeframe_opportunity('GPUS'), indent=4))
-    # data = fetch_data(['MSAI'], '1d', '1mo')['MSAI']
-    # print(opportunity_score(data, lookback=10, recent=2))
-    # print(analyze_volume(data, lookback=10, recent=2))
-    # print(data.loc[:, ['Open', 'Close', 'High', 'Low', 'Volatility', 'Volume', 'Change']])
-    # print(analyze_volatility(data, lookback=10, recent=2))
+    print(json.dumps(multi_timeframe_opportunity('BYND'), indent=4))
