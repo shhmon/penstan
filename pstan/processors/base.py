@@ -77,9 +77,16 @@ class Base(Processor):
         return df
 
     @staticmethod
+    def plot_prepost(df: pd.DataFrame, ax):
+        for idx in df.index[df['Is_prepost']]:
+            pos = df.index.get_loc(idx)
+            ax.axvspan(pos-0.5, pos+0.5, alpha=0.04, color='gray', zorder=1)
+
+    @staticmethod
     def plot(df: pd.DataFrame, ax):
         df.plot(y='Volume_n', ax=ax, kind='bar', alpha=0.4, width=1, color='steelblue', label='Volume')
         df.plot(y='Close_n', ax=ax, kind='line', color='white', linewidth=1, label='Close')
         ax.set_title('Normalized Close & Volume')
         ax.set_ylabel('Normalized (0-1)')
+        Base.plot_prepost(df, ax)
 
