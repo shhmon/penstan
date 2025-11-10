@@ -1427,39 +1427,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/04/89/76f6f1b744c8608e0d416b588b9d63c2a500ff800065ae610f7c80f532d6/peewee-3.18.2.tar.gz", hash = "sha256:77a54263eb61aff2ea72f63d2eeb91b140c25c1884148e28e4c0f7c4f64996a0", size = 949220, upload-time = "2025-07-08T12:52:03.941Z" }
 
 [[package]]
-name = "penstan"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "alpaca-py" },
-    { name = "eodhd" },
-    { name = "fastapi" },
-    { name = "jupyter" },
-    { name = "massive" },
-    { name = "matplotlib" },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
-    { name = "python-json-logger" },
-    { name = "uvicorn" },
-    { name = "yfinance" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "alpaca-py", specifier = ">=0.43.2" },
-    { name = "eodhd", specifier = ">=1.0.32" },
-    { name = "fastapi", specifier = ">=0.120.3" },
-    { name = "jupyter", specifier = ">=1.1.1" },
-    { name = "massive", specifier = ">=2.0.1" },
-    { name = "matplotlib", specifier = ">=3.10.7" },
-    { name = "pydantic", specifier = ">=2.12.3" },
-    { name = "pydantic-settings", specifier = ">=2.11.0" },
-    { name = "python-json-logger", specifier = ">=4.0.0" },
-    { name = "uvicorn", specifier = ">=0.38.0" },
-    { name = "yfinance", specifier = ">=0.2.66" },
-]
-
-[[package]]
 name = "pexpect"
 version = "4.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1572,6 +1539,41 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/e6/eb/2a981a13e35cda8b75b5585aaffae2eb904f8f351bdd3870769692acbd8a/protobuf-6.33.0-cp39-abi3-manylinux2014_s390x.whl", hash = "sha256:e0a1715e4f27355afd9570f3ea369735afc853a6c3951a6afe1f80d8569ad298", size = 339159, upload-time = "2025-10-15T20:39:46.186Z" },
     { url = "https://files.pythonhosted.org/packages/21/51/0b1cbad62074439b867b4e04cc09b93f6699d78fd191bed2bbb44562e077/protobuf-6.33.0-cp39-abi3-manylinux2014_x86_64.whl", hash = "sha256:35be49fd3f4fefa4e6e2aacc35e8b837d6703c37a2168a55ac21e9b1bc7559ef", size = 323172, upload-time = "2025-10-15T20:39:47.465Z" },
     { url = "https://files.pythonhosted.org/packages/07/d1/0a28c21707807c6aacd5dc9c3704b2aa1effbf37adebd8caeaf68b17a636/protobuf-6.33.0-py3-none-any.whl", hash = "sha256:25c9e1963c6734448ea2d308cfa610e692b801304ba0908d7bfa564ac5132995", size = 170477, upload-time = "2025-10-15T20:39:51.311Z" },
+]
+
+[[package]]
+name = "pstan"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "alpaca-py" },
+    { name = "eodhd" },
+    { name = "fastapi" },
+    { name = "jupyter" },
+    { name = "massive" },
+    { name = "matplotlib" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "python-json-logger" },
+    { name = "pytz" },
+    { name = "uvicorn" },
+    { name = "yfinance" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "alpaca-py", specifier = ">=0.43.2" },
+    { name = "eodhd", specifier = ">=1.0.32" },
+    { name = "fastapi", specifier = ">=0.120.3" },
+    { name = "jupyter", specifier = ">=1.1.1" },
+    { name = "massive", specifier = ">=2.0.1" },
+    { name = "matplotlib", specifier = ">=3.10.7" },
+    { name = "pydantic", specifier = ">=2.12.3" },
+    { name = "pydantic-settings", specifier = ">=2.11.0" },
+    { name = "python-json-logger", specifier = ">=4.0.0" },
+    { name = "pytz", specifier = ">=2025.2" },
+    { name = "uvicorn", specifier = ">=0.38.0" },
+    { name = "yfinance", specifier = ">=0.2.66" },
 ]
 
 [[package]]
