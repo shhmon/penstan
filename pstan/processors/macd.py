@@ -41,4 +41,4 @@ class MACD(Processor):
         ax.legend(loc="upper left", fontsize=9)
         ax.set_ylabel("MACD")
         ax.grid(True, linestyle="--", alpha=0.3)
-        ax.set_title('MACD & Buy Signals', fontweight='bold')
+        ax.set_title('MACD & Buy Signals')

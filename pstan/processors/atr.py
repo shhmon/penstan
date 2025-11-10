@@ -38,8 +38,8 @@ class ATR(Processor):
         break_positions = [df.index.get_loc(dt) for dt in break_points]
         if len(break_positions) > 0:
             ax.scatter(break_positions, [0]*len(break_positions), 
-                       color='orangered', s=20, zorder=5, label='Break', marker='x')
-        df.plot(y='ATR', ax=ax, kind='bar', alpha=0.4, width=1, color='turquoise', label='ATR')
+                       color='orangered', s=20, zorder=5, label='Break', marker='x', linewidths=0.9)
+        df.plot(y='ATR', ax=ax, kind='bar', alpha=0.8, width=1, color='darkcyan', label='ATR')
         df.plot(y='Gain', ax=ax, kind='bar', alpha=0.5, width=1, color='dodgerblue', label='Gain')
         ax.axhline(y=0, color='black', linestyle='-', linewidth=0.5)
         ax.set_title('ATR, Gain & Breakout Points')

@@ -5,7 +5,7 @@ from pstan.processors.base import Base
 class Boll(Processor):
     def __init__(
         self, 
-        window = 16,
+        window = 8,
         squeeze_threshold = 0.7
     ):
         self.window = window
@@ -41,6 +41,6 @@ class Boll(Processor):
         df.plot(y='Boll_l', ax=ax, alpha=0.6, color='skyblue', label='BB Lower')
         df.plot(y='Boll_w', kind='bar', ax=ax, alpha=0.1, width=1, color='skyblue')
         df[df['Boll_squeeze']].plot(y='Boll_w', kind='bar', ax=ax, alpha=0.3, width=1, color='limegreen', label='BB Squeeze')
-        ax.set_title('Price, Bollinger Bands & Signals', fontweight='bold')
+        ax.set_title('Price, Bollinger Bands & Signals')
         ax.set_ylabel('Price')
         Base.plot_prepost(df, ax)

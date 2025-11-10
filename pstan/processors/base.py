@@ -80,7 +80,7 @@ class Base(Processor):
     def plot_prepost(df: pd.DataFrame, ax):
         for idx in df.index[df['Is_prepost']]:
             pos = df.index.get_loc(idx)
-            ax.axvspan(pos-0.5, pos+0.5, alpha=0.04, color='gray', zorder=1)
+            ax.axvspan(pos-0.5, pos+0.5, alpha=0.05, color='gray', zorder=1)
 
     @staticmethod
     def plot(df: pd.DataFrame, ax):
