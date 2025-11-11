@@ -21,8 +21,8 @@ class MACD(Processor):
         trendDirection = np.where(df['Close'] > ema_trend, "up", "down")
 
         df['MACD_buy_signal'] = (
-            (df['hist_difference'].shift(1) < 0) & (df['hist_difference'] > 0) &
             (df['MACD'] < 0) & (df['MACD_ema'] < 0) &
+            (df['hist_difference'].shift(1) < 0) & (df['hist_difference'] > 0) &
             (trendDirection == "up")
         ).astype(int)
 

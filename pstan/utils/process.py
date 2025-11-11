@@ -25,13 +25,3 @@ def normalize_signed(series):
     max_abs = max(abs(s.min()), abs(s.max()))
     return series / max_abs  # scales to [-1, 1]
 
-def scatter_dot(df, ax, column, y, color=None, label=None):
-    """Plot signal indicators as scatter points"""
-    if column not in df.columns:
-        return
-    signal_positions = df.index[df[column].astype(bool)]
-    if len(signal_positions) == 0:
-        return
-    signal_positions = [df.index.get_loc(dt) for dt in signal_positions]
-    ax.scatter(signal_positions, [y]*len(signal_positions), 
-               color=color, s=12, zorder=6, label=label or column, marker='|', linewidths=2)

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from pstan.processors import Processor
-from pstan.utils import normalize
+from pstan.utils.process import normalize
 
 class Base(Processor):
     def __init__(self, window = 16):

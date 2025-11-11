@@ -56,3 +56,25 @@ def fetch_data_yfinance(
     data = data[data.index <= end]
 
     return data
+
+def print_meta(symbol: str, df: pd.DataFrame):
+    rnd, w = 4, 40
+
+    ticker = yf.Ticker(symbol)
+    price = round(df['Close'].iloc[-1].item(), rnd)
+    eps = ticker.info['epsTrailingTwelveMonths']
+    pe = round(price/eps, rnd)
+
+    fill = (w // 2) - (len(symbol) // 2)
+
+    print('=' * w)
+    print('-' * fill + symbol + '-' * fill)
+    print('=' * w)
+    print(f'''
+        {price=},
+        {eps=},
+        {pe=},
+        {ticker.calendar=},
+        {ticker.analyst_price_targets=},
+    ''')
+    print('-' * w)
