@@ -22,10 +22,9 @@ class Signals(Processor):
             (df['Volume_ratio_slow'] > 3) & \
             (df['Buy_sell_ratio'] > 1) & \
             (df['RSI'] > 60) & \
-            ((df['MACD']).rolling(self.window*2).max() == 1) & \
             (df['MACD'].diff() > 0) & \
             (df['Volume_momentum_norm'] > 2) & \
-            (df['Boll_breakout_h'].rolling(self.window).max() == 1) & \
+            (df['Boll_breakout_h'].rolling(self.window//2).max() == 1) & \
             (pd.Series(df['Boll_w'].rolling(window=self.window).mean()).diff() > 0)
 
 
