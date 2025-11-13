@@ -1,5 +1,6 @@
 import pandas as pd
 from pstan.processors import Processor
+from pstan.processors.base import Base
 
 class ATR(Processor):
     def __init__(
@@ -35,16 +36,18 @@ class ATR(Processor):
     def plot(self, df: pd.DataFrame, ax):
         break_points = df.index[df['ATR_break'].astype(bool)]
         break_positions = [df.index.get_loc(dt) for dt in break_points]
+        
         if len(break_positions) > 0:
             ax.scatter(break_positions, df.loc[break_points, 'ATR'] * self.break_threshold,
-                       color='limegreen', s=20, zorder=5, label='ATR Break', marker='x', linewidths=0.9)
-        df.plot(y='ATR', ax=ax, alpha=0.7, color='slategray', label='ATR')
-
-
+                       color='lightgreen', s=20, zorder=5, label='ATR Break', marker='x', linewidths=0.9)
+        
+        ax.plot(df.index, df['ATR'], alpha=0.7, color='slategray', label='ATR')
         ax.fill_between(range(len(df)), 0, df['ATR'], alpha=0.7, color='slategray', interpolate=True)
-
-        df.plot(y='Gain', ax=ax, kind='bar', alpha=0.7, width=1, color='dodgerblue', label='Gain')
+        
+        colors = df['Gain'].apply(lambda x: 'yellowgreen' if x >= 0 else 'orangered')
+        ax.bar(df.index, df['Gain'], alpha=0.7, width=1, color=colors, label='Gain', zorder=10)
+        
         ax.axhline(y=0, color='black', linestyle='-', linewidth=0.5)
-
         ax.set_title('ATR, Gain & Breakout Points')
         ax.set_ylabel('Value')
+        Base.plot_prepost(df, ax)

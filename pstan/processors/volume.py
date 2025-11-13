@@ -89,12 +89,12 @@ class Volume(Processor):
 
     @staticmethod
     def plot_ratio(df: pd.DataFrame, ax):
-        df.plot(y='Volume_ratio', ax=ax, color='darkblue', linewidth=2, label='Volume Ratio')
-        df.plot(y='Volume_ratio_fast', ax=ax, color='blue', alpha=0.7, linewidth=1.5, label='Vol Ratio Fast')
-        df.plot(y='Volume_ratio_slow', ax=ax, color='mediumblue', alpha=0.7, linewidth=1.5, label='Vol Ratio Slow')
-        ax.axhline(y=1, color='gray', linestyle='--', linewidth=0.8)
-        ax.axhline(y=2, color='orange', linestyle='--', linewidth=0.8, alpha=0.5)
-        ax.axhline(y=3, color='red', linestyle='--', linewidth=0.8, alpha=0.5)
+        df.plot(y='Volume_ratio', ax=ax, color='cornflowerblue', linewidth=2, label='Volume Ratio')
+        df.plot(y='Volume_ratio_fast', ax=ax, color='deepskyblue', alpha=0.7, linewidth=1.5, label='Vol Ratio Fast')
+        df.plot(y='Volume_ratio_slow', ax=ax, color='royalblue', alpha=0.7, linewidth=1.5, label='Vol Ratio Slow')
+        ax.axhline(y=1, color='lightgray', linestyle='--', linewidth=0.8)
+        ax.axhline(y=2, color='gold', linestyle='--', linewidth=0.8, alpha=0.5)
+        ax.axhline(y=3, color='lightcoral', linestyle='--', linewidth=0.8, alpha=0.5)
         ax.set_title('Volume Ratios (Multi-timeframe)')
         ax.set_ylabel('Ratio')
 
@@ -122,10 +122,10 @@ class Volume(Processor):
 
     @staticmethod
     def plot_obv(df: pd.DataFrame, ax):
-        df.plot(y='OBV', ax=ax, color='purple', linewidth=1.5, label='OBV')
+        df.plot(y='OBV', ax=ax, color='mediumpurple', linewidth=1.5, label='OBV')
         ax.set_title('On-Balance Volume (OBV)')
         ax.set_ylabel('Cumulative Volume')
         ax2 = ax.twinx()
-        df.plot(y='OBV_change', ax=ax2, kind='bar', alpha=0.3, width=1, color='violet', label='OBV Change %')
-        ax2.set_ylabel('OBV % Change', color='violet')
+        df.plot(y='OBV_change', ax=ax2, kind='bar', alpha=0.3, width=1, color='plum', label='OBV Change %')
+        ax2.set_ylabel('OBV % Change', color='plum')
         ax2.axhline(y=0, color='gray', linestyle='-', linewidth=0.5)

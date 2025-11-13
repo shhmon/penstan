@@ -34,11 +34,11 @@ class Pressure(Processor):
 
     @staticmethod
     def plot(df: pd.DataFrame, ax):
-        df.plot(y='Buy_sell_ratio', ax=ax, color='green', linewidth=1.5, label='Buy/Sell Ratio')
+        df.plot(y='Buy_sell_ratio', ax=ax, color='greenyellow', alpha=0.8, linewidth=1.5, label='Buy/Sell Ratio')
         ax.axhline(y=1, color='gray', linestyle='--', linewidth=1, label='Equilibrium')
         ax.axhline(y=1.5, color='lightgreen', linestyle='--', linewidth=0.8, alpha=0.5)
         ax.fill_between(range(len(df)), 1, df['Buy_sell_ratio'], 
-                         where=(df['Buy_sell_ratio'] >= 1), alpha=0.2, color='green', interpolate=True)
+                         where=(df['Buy_sell_ratio'] >= 1), alpha=0.2, color='lightgreen', interpolate=True)
         ax.fill_between(range(len(df)), 1, df['Buy_sell_ratio'], 
                          where=(df['Buy_sell_ratio'] < 1), alpha=0.2, color='red', interpolate=True)
         ax.set_title('Buying vs Selling Pressure')

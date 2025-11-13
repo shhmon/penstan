@@ -36,11 +36,10 @@ class Boll(Processor):
     @staticmethod
     def plot(df: pd.DataFrame, ax):
         df.plot(y='Close', ax=ax, color='white', linewidth=1.5, label='Close')
-        df.plot(y='Boll_h', ax=ax, alpha=0.6, color='skyblue', label='BB Upper')
-        df.plot(y='Boll_m', ax=ax, alpha=0.4, color='gray', linestyle='--', linewidth=0.8)
-        df.plot(y='Boll_l', ax=ax, alpha=0.6, color='skyblue', label='BB Lower')
-        df.plot(y='Boll_w', kind='bar', ax=ax, alpha=0.1, width=1, color='skyblue')
-        df[df['Boll_squeeze']].plot(y='Boll_w', kind='bar', ax=ax, alpha=0.3, width=1, color='limegreen', label='BB Squeeze')
+        df.plot(y='Boll_h', ax=ax, alpha=0.6, color='cornflowerblue', label='BB Upper')
+        df.plot(y='Boll_m', ax=ax, alpha=0.4, color='orange', linestyle='--', linewidth=0.8)
+        df.plot(y='Boll_l', ax=ax, alpha=0.6, color='cornflowerblue', label='BB Lower')
+        df.plot(y='Boll_w', kind='bar', ax=ax, alpha=0.1, width=1, color='cornflowerblue')
         ax.set_title('Price, Bollinger Bands & Signals')
         ax.set_ylabel('Price')
         Base.plot_prepost(df, ax)

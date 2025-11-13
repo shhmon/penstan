@@ -21,6 +21,12 @@ class Base(Processor):
         # Light smoothing to reduce yfinance noise (apply before other processing)
         df['Volume_raw'] = df['Volume'].copy()
         df['Volume'] = df['Volume'].rolling(window=2).mean()
+        df['Volume_valid'] = df['Volume'].replace(0, np.nan)
+        df['Volume_ff'] = df['Volume_valid'].ffill()
+
+        # Mark regular vs pre/post market hours (yfinance sets volume=0 for pre/post)
+        df['Is_regular_hours'] = df['Volume_raw'] > 0
+        df['Is_prepost'] = ~df['Is_regular_hours']
 
         df['Volume_n'] = normalize(df['Volume'])
         df['Close_n'] = normalize(df['Close'])
@@ -33,18 +39,13 @@ class Base(Processor):
         df['Close_roc_fast'] = df['Close'].pct_change(periods=self.window//2)
         df['Close_roc_slow'] = df['Close'].pct_change(periods=self.window*2)
 
-        # --- Volume Metrics ---
-        # Mark regular vs pre/post market hours (yfinance sets volume=0 for pre/post)
-        df['Is_regular_hours'] = df['Volume_raw'] > 0
-        df['Is_prepost'] = ~df['Is_regular_hours']
-        df['Volume_valid'] = df['Volume'].replace(0, np.nan)
-
         # --- Candle Metrics ---
         df['Gain'] = df['Close'] - df['Open']
         df['Range'] = df['High'] - df['Low']
         df['Range_pct'] = df['Range'] / df['Close']
         df['Gain_close_ratio'] = df['Gain'] / df['Close']
         df['Typical_price'] = (df['High'] + df['Low'] + df['Close']) / 3
+        df['Sustained_gain'] = (df['Gain'] > 0) & (df['Gain'].rolling(int(self.window/2)).apply(lambda x: (x > 0).sum()) >= int(self.window/2)*0.75)
         
         # --- Support/Resistance ---
         df['Resistance'] = df['High'].rolling(window=self.window*2).max()
@@ -80,11 +81,11 @@ class Base(Processor):
     def plot_prepost(df: pd.DataFrame, ax):
         for idx in df.index[df['Is_prepost']]:
             pos = df.index.get_loc(idx)
-            ax.axvspan(pos-0.5, pos+0.5, alpha=0.05, color='gray', zorder=1)
+            ax.axvspan(pos-0.5, pos+0.5, alpha=0.03, color='gray', zorder=1)
 
     @staticmethod
     def plot(df: pd.DataFrame, ax):
-        df.plot(y='Volume_n', ax=ax, kind='bar', alpha=0.4, width=1, color='steelblue', label='Volume')
+        df.plot(y='Volume_n', ax=ax, kind='bar', alpha=0.4, color='royalblue', label='Volume')
         df.plot(y='Close_n', ax=ax, kind='line', color='white', linewidth=1, label='Close')
         ax.set_title('Normalized Close & Volume')
         ax.set_ylabel('Normalized (0-1)')

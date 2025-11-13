@@ -13,7 +13,7 @@ class MACD(Processor):
         df = df.copy()
 
         ema_s = df['Close'].ewm(span=self.window, adjust=False).mean()
-        ema_l = df['Close'].ewm(span=self.window * 2, adjust=False).mean()
+        ema_l = df['Close'].ewm(span=self.window * 2 + 2, adjust=False).mean()
         df['MACD'] = ema_s - ema_l 
         df['MACD_ema'] = df['MACD'].ewm(span=self.window // 1.5, adjust=False).mean()
         df['hist_difference'] = df['MACD'] - df['MACD_ema']
